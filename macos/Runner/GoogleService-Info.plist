@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>351051379750-4e92m2a574i4ktsfgfl2i7ve3g6nn2gg.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.351051379750-4e92m2a574i4ktsfgfl2i7ve3g6nn2gg</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDQ2vfowfcuYw6G1hetGlBCf3AYboq30_A</string>
+	<key>GCM_SENDER_ID</key>
+	<string>351051379750</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.overclockApp</string>
+	<key>PROJECT_ID</key>
+	<string>overclock-app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>overclock-app.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:351051379750:ios:d9ea840f4b18c49e77e2e7</string>
+</dict>
+</plist>

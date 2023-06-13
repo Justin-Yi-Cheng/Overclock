@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "351051379750",
+    "project_id": "overclock-app",
+    "storage_bucket": "overclock-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:351051379750:android:0168e3c494c3004f77e2e7",
+        "android_client_info": {
+          "package_name": "com.example.overclock_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "351051379750-5vgd76nlat366j78sshdheo32lo6g6n0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUnlxNTBQzxY_t7nlF8_dBOz1ZHaJc3Ak"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "351051379750-5vgd76nlat366j78sshdheo32lo6g6n0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

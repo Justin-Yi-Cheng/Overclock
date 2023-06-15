@@ -23,16 +23,16 @@ class OverclockDrawer extends StatefulWidget {
 }
 
 class _OverclockDrawerState extends State<OverclockDrawer> {
+  bool isFirstTimeVisible =
+      currentUserData["Acceptance"] == 0 || currentUserData["Acceptance"] == 3;
+
+  Future<void> signOut() async {
+    await FirebaseAuth.instance.signOut();
+  }
+
   @override
   Widget build(BuildContext context) {
     double appWidth = MediaQuery.of(context).size.width;
-
-    bool isFirstTimeVisible = currentUserData["Acceptance"] == 0 ||
-        currentUserData["Acceptance"] == 3;
-
-    Future<void> signOut() async {
-      await FirebaseAuth.instance.signOut();
-    }
 
     return Stack(
       alignment: Alignment.center,

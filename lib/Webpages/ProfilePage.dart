@@ -1,7 +1,8 @@
 // ignore_for_file: file_names
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+// ignore: depend_on_referenced_packages
+import 'package:expandable/expandable.dart';
 
 import '../firebase_info.dart';
 import '../drawer.dart';
@@ -18,7 +19,6 @@ class _ProfilePageState extends State<ProfilePage> {
   late Future allUserDataInstance;
   late String currentRole = currentUserData["Position"];
   late String currentRoleDescription;
-  bool isDataLoaded = false;
 
   List<String> allRoles = [
     "Captain",
@@ -42,12 +42,11 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   void initState() {
-    setRefID();
     super.initState();
+    setRefID();
     userDataInstance = getCurrentUserData();
     allUserDataInstance = getAllUserData();
     currentRoleDescription = allRoleDescriptions[allRoles.indexOf(currentRole)];
-    isDataLoaded = true;
   }
 
   @override
@@ -106,7 +105,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   alignment: Alignment.topCenter,
                                   child: Transform(
                                     transform:
-                                        Matrix4.translationValues(-60, 10, 0),
+                                        Matrix4.translationValues(-60, 5, 0),
                                     child: Container(
                                       height: 60,
                                       width: 60,
@@ -131,7 +130,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   alignment: Alignment.topCenter,
                                   child: Transform(
                                     transform:
-                                        Matrix4.translationValues(30, 5, 0),
+                                        Matrix4.translationValues(30, 0, 0),
                                     child: SizedBox(
                                       width: 100,
                                       height: 50,
@@ -153,7 +152,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   alignment: Alignment.topCenter,
                                   child: Transform(
                                     transform:
-                                        Matrix4.translationValues(0, 35, 0),
+                                        Matrix4.translationValues(0, 30, 0),
                                     child: SizedBox(
                                       width: 35,
                                       height: 20,
@@ -172,56 +171,96 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                 ),
                                 ValueListenableBuilder(
-                                  valueListenable: ValueNotifier(
-                                      currentUserData["Status"] == "Online"),
+                                  valueListenable: isOnline,
                                   builder: ((context, value, child) {
-                                    return GestureDetector(
-                                      behavior: HitTestBehavior.translucent,
-                                      onTap: () {
-                                        setStatus();
-                                        debugPrint(
-                                            "${currentUserData["Status"] == "Online"}");
-                                      },
-                                      child: SizedBox(
-                                        height: 120,
-                                        child: Align(
-                                          alignment: Alignment.bottomCenter,
+                                    return Stack(
+                                      children: [
+                                        Positioned(
+                                          top: 50,
+                                          left: 75,
                                           child: Container(
-                                            width: 150,
-                                            height: 35,
+                                            width: 10,
+                                            height: 10,
                                             decoration: BoxDecoration(
                                               color: isOnline.value
-                                                  ? const Color.fromRGBO(
-                                                      211, 211, 211, 1)
-                                                  : const Color.fromRGBO(
-                                                      255, 49, 49, 1),
-                                              shape: BoxShape.rectangle,
-                                              borderRadius:
-                                                  BorderRadius.circular(12.0),
+                                                  ? Colors.green
+                                                  : Colors.red,
+                                              shape: BoxShape.circle,
                                             ),
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(10.0),
-                                              child: Center(
-                                                child: Text(
-                                                  isOnline.value
-                                                      ? "Attendance Submitted"
-                                                      : "Submit Attendance",
-                                                  style: GoogleFonts.lexend(
-                                                    color: isOnline.value
-                                                        ? const Color.fromRGBO(
-                                                            173, 173, 173, 1)
-                                                        : Colors.white,
-                                                    fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                        Positioned(
+                                          top: 49,
+                                          left: 90,
+                                          child: Text(
+                                            isOnline.value
+                                                ? "Online"
+                                                : "Offline",
+                                            style: GoogleFonts.lexend(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w300,
+                                            ),
+                                            textScaleFactor: 0.65,
+                                            textAlign: TextAlign.left,
+                                          ),
+                                        ),
+                                        GestureDetector(
+                                          behavior: HitTestBehavior.translucent,
+                                          onTap: () async {
+                                            await setStatus();
+                                            isOnline.value =
+                                                currentUserData["Status"] ==
+                                                    "Online";
+                                          },
+                                          child: SizedBox(
+                                            height: 120,
+                                            child: Align(
+                                              alignment: Alignment.bottomCenter,
+                                              child: Container(
+                                                width: 150,
+                                                height: 35,
+                                                decoration: BoxDecoration(
+                                                  color: isOnline.value
+                                                      ? const Color.fromRGBO(
+                                                          211, 211, 211, 1)
+                                                      : const Color.fromRGBO(
+                                                          255, 49, 49, 1),
+                                                  shape: BoxShape.rectangle,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          12.0),
+                                                ),
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(
+                                                      10.0),
+                                                  child: Center(
+                                                    child: Text(
+                                                      isOnline.value
+                                                          ? "Attendance Submitted"
+                                                          : "Submit Attendance",
+                                                      style: GoogleFonts.lexend(
+                                                        color: isOnline.value
+                                                            ? const Color
+                                                                    .fromRGBO(
+                                                                173,
+                                                                173,
+                                                                173,
+                                                                1)
+                                                            : Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                      ),
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      textScaleFactor: 0.85,
+                                                    ),
                                                   ),
-                                                  textAlign: TextAlign.center,
-                                                  textScaleFactor: 0.85,
                                                 ),
                                               ),
                                             ),
                                           ),
                                         ),
-                                      ),
+                                      ],
                                     );
                                   }),
                                 ),
@@ -244,26 +283,26 @@ class _ProfilePageState extends State<ProfilePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: const EdgeInsets.fromLTRB(10, 5, 0, 0),
+                              padding: const EdgeInsets.fromLTRB(12, 12, 12, 2),
                               child: Text(
                                 currentRole,
                                 style: GoogleFonts.lexend(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
                                 ),
-                                textScaleFactor: 1.75,
+                                textScaleFactor: 1.5,
                                 textAlign: TextAlign.left,
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.fromLTRB(10, 2, 10, 0),
+                              padding: const EdgeInsets.fromLTRB(12, 2, 12, 0),
                               child: Text(
                                 currentRoleDescription,
                                 style: GoogleFonts.lexend(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
                                 ),
-                                textScaleFactor: 0.65,
+                                textScaleFactor: 0.6,
                                 textAlign: TextAlign.left,
                               ),
                             ),
@@ -282,96 +321,159 @@ class _ProfilePageState extends State<ProfilePage> {
                   return const SizedBox.shrink();
                 }
 
-                return Column(
-                  children: [
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Text(
-                          "Members List",
-                          style: GoogleFonts.lexend(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
+                return SizedBox(
+                  width: 490,
+                  child: Card(
+                    elevation: 8.0,
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.0)),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(12, 12, 12, 6),
+                          child: Text(
+                            "Member List",
+                            style: GoogleFonts.lexend(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textScaleFactor: 1.75,
+                            textAlign: TextAlign.center,
                           ),
-                          textScaleFactor: 3,
-                          textAlign: TextAlign.left,
                         ),
-                      ),
-                    ),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: allUserData.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 20, 0, 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: 150,
-                                height: 150,
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: const Color.fromRGBO(
-                                          105, 105, 105, 0.8),
-                                    ),
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(
-                                      image: NetworkImage(allUserData[index]
-                                          ["Profile-Picture"]),
-                                    )),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 6.0),
+                          child: Container(
+                            color: Colors.grey,
+                            width: 80,
+                            height: 2,
+                          ),
+                        ),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: allUserData.length,
+                          itemBuilder: (context, index) {
+                            return ExpandablePanel(
+                              theme: const ExpandableThemeData(
+                                iconColor: Colors.black,
+                                iconSize: 20,
                               ),
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                child: SizedBox(
-                                  width: 300,
-                                  height: 150,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        allUserData[index]["Name"],
-                                        style: GoogleFonts.lexend(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold,
+                              header: Padding(
+                                padding: const EdgeInsets.all(6.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: 80,
+                                      height: 80,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: const Color.fromRGBO(
+                                              105, 105, 105, 0.8),
                                         ),
-                                        textScaleFactor: 2,
-                                        textAlign: TextAlign.left,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            0, 0, 0, 8),
-                                        child: Text(
-                                          allUserData[index]["Position"],
-                                          style: GoogleFonts.lexend(
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                          textScaleFactor: 0.75,
-                                          textAlign: TextAlign.left,
+                                        shape: BoxShape.circle,
+                                        image: DecorationImage(
+                                          image: NetworkImage(allUserData[index]
+                                              ["Profile-Picture"]),
                                         ),
                                       ),
-                                      Text(
-                                        allUserData[index]["Short-Description"],
-                                        style: GoogleFonts.lexend(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          10, 0, 0, 0),
+                                      child: SizedBox(
+                                        width: 340,
+                                        height: 80,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              allUserData[index]["Name"],
+                                              style: GoogleFonts.lexend(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                              textScaleFactor: 1.25,
+                                              textAlign: TextAlign.left,
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      0, 2, 0, 4),
+                                              child: Text(
+                                                allUserData[index]["Position"],
+                                                style: GoogleFonts.lexend(
+                                                  color: Colors.grey,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                                textScaleFactor: 1,
+                                                textAlign: TextAlign.left,
+                                              ),
+                                            ),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          0, 2, 10, 0),
+                                                  child: Container(
+                                                    width: 15,
+                                                    height: 15,
+                                                    decoration: BoxDecoration(
+                                                      color: isOnline.value
+                                                          ? Colors.green
+                                                          : Colors.red,
+                                                      shape: BoxShape.circle,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Text(
+                                                  isOnline.value
+                                                      ? "Online"
+                                                      : "Offline",
+                                                  style: GoogleFonts.lexend(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                  textScaleFactor: 1,
+                                                  textAlign: TextAlign.left,
+                                                ),
+                                              ],
+                                            ),
+                                          ],
                                         ),
-                                        textScaleFactor: 0.65,
-                                        textAlign: TextAlign.left,
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ],
-                          ),
-                        );
-                      },
+                              collapsed: const SizedBox.shrink(),
+                              expanded: Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: Text(
+                                  "${allUserData[index]["Short-Description"]}",
+                                  style: GoogleFonts.lexend(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w300,
+                                  ),
+                                  textScaleFactor: 0.85,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 );
               },
             ),

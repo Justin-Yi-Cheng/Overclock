@@ -16,6 +16,12 @@ Future getAllUserData() async {
           },
         ),
       );
+
+  for (int i = 0; i < allUserData.length; i++) {
+    if (allUserData[i]["Name"] == currentUserData["Name"]) {
+      allUserData.remove(allUserData[i]);
+    }
+  }
 }
 
 Future getCurrentUserData() async {
